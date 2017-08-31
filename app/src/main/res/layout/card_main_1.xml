@@ -12,63 +12,131 @@
     card_view:cardCornerRadius="@dimen/card_recycler_corner_radius"
     card_view:cardElevation="@dimen/card_recycler_elevation">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
 
-        <ImageView
-            android:id="@+id/img_main_card_1"
+        >
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_layout_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin">
+
+            <EditText
+                android:id="@+id/card_main_edit_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:hint="@string/main_widget_edit_text"
+                android:maxLength="20"
+                android:maxLines="1"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:id="@+id/card_main_layout_card"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_edit_text2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/text_margin">
+
+                <EditText
+                    android:id="@+id/card_main_card_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="银行卡号"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:inputType="none"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/card_main_get_cardNum"
+                android:text="@string/card_main_getcard"/>
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_layout_edit_text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_margin"
+           >
+
+            <EditText
+                android:id="@+id/card_main_phoneNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:hint="请输入手机号"
+                android:maxLength="20"
+                android:maxLines="1"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Switch
+            android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:layout_marginTop="@dimen/text_margin"
+            android:checked="false"
+            android:switchPadding="@dimen/text_margin"
+            android:text="是否使用优惠券" />
 
-        <TextView
-            android:id="@+id/tv_card_main_1_title"
-            style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/text_input_layout_edit_text4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/img_main_card_1"
-            android:layout_marginStart="@dimen/card_title_margin"
-            android:layout_marginEnd="@dimen/card_title_margin"
-            android:layout_marginTop="@dimen/card_title_margin_top"
-            android:text="@string/main_card_title"
-            android:textColor="@color/black" />
+            android:layout_marginTop="@dimen/text_margin"
+            >
 
-        <TextView
-            android:id="@+id/tv_card_main1_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_card_main_1_title"
-            android:layout_marginBottom="@dimen/card_subtitle_margin"
-            android:layout_marginStart="@dimen/card_subtitle_margin"
-            android:layout_marginEnd="@dimen/card_subtitle_margin"
-            android:layout_marginTop="@dimen/card_button_margin"
-            android:text="@string/main_card_subtitle" />
+            <EditText
+                android:id="@+id/card_main_quan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:hint="请输入优惠码"
+                android:visibility="gone"
+                android:maxLength="20"
+                android:maxLines="1"
+                />
+
+        </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/btn_card_main1_action1"
+        android:id="@+id/card_main_vipSubmit"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_button_margin"
+        android:text="会员支付"
+        android:textColor="@color/green_primary_dark"
+        />
+        <Button
+            android:id="@+id/card_main_submit"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_card_main1_subtitle"
             android:layout_margin="@dimen/card_button_margin"
-            android:text="@string/main_card_button_1"
-            android:textColor="@color/colorAccent" />
+            android:text="普通支付"
+            android:textColor="@color/green_primary_dark"
+            />
 
-        <Button
-            android:id="@+id/btn_card_main1_action2"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_card_main1_subtitle"
-            android:layout_marginBottom="@dimen/card_button_margin"
-            android:layout_marginTop="@dimen/card_button_margin"
-            android:layout_toEndOf="@id/btn_card_main1_action1"
-            android:text="@string/main_card_button_2"
-            android:textColor="@color/colorAccent"
-            android:layout_toRightOf="@id/btn_card_main1_action1" />
 
-    </RelativeLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

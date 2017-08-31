@@ -6,4 +6,8 @@
 
     <string name="action_settings">设置</string>
     <string name="title_activity_main">活力汇-收银</string>
+    <string name="main_card_button_1">确认</string>
+    <string name="main_widget_edit_text">输入金额</string>
+    <string name="text_nav_header">点击图片获取商户信息</string>
+    <string name="card_main_getcard">获取卡号</string>
 </resources>
