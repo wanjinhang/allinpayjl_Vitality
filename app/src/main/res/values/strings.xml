@@ -10,4 +10,11 @@
     <string name="main_widget_edit_text">输入金额</string>
     <string name="text_nav_header">点击图片获取商户信息</string>
     <string name="card_main_getcard">获取卡号</string>
+    <string name="sale_bank">银行卡消费</string>
+    <string name="bank_void">消费撤销</string>
+    <string name="bank_refund">退货</string>
+    <string name="balance_bank">余额查询</string>
+    <string name="print">打印</string>
+    <string name="trans_settle">结算</string>
+    <string name="title_activity_void">VoidActivity</string>
 </resources>

@@ -33,6 +33,7 @@ import com.allinpay.usdk.core.data.ResponseData;
 import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
 
+import java.io.UnsupportedEncodingException;
 
 
 public class MainActivity extends AppCompatActivity
@@ -192,10 +193,6 @@ public class MainActivity extends AppCompatActivity
         card_edt = (EditText) findViewById(R.id.card_main_card_num);
         phone_edt = (EditText) findViewById(R.id.card_main_phoneNum);
         quan_Switch.isChecked();
-//        String s = "0";
-//        byte[] b =s.getBytes();
-//        Log.e("haha",(int)b[0]+"");
-
 
         Button card_main_vipSubmit = (Button) findViewById(R.id.card_main_vipSubmit);
 
@@ -368,16 +365,23 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_pay) {
+            //消费
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_void) {
+            //消费撤销
+            Intent intent = new Intent(this, VoidActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_refund) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_balance_bank) {
 
         } else if(id == R.id.nav_read_card){
             sendUSDK(Busi_Data.BUSI_MANAGER_SERVICE_READCARD,USDKRuqester.READ_CARD);
+        }else if(id == R.id.nav_print){//测试打印优惠码
+
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -484,17 +488,77 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
-                        String responseMsg = responsePacket.getMessage();
-                        Log.e("haha",responseMsg);
-                        String responseCode = responseMsg.substring(4,8);//返回码
-                        String errorCode = responseMsg.substring(8,10);
-                        Log.e("TEXT",responseMsg);
-                        Log.e("Code",responseCode+"|"+errorCode);
+                        String str_data = responsePacket.getMessage();
+                        String responseCode = null;//返回码
+                        String errorCode = null;
+                        try {
+                            responseCode = getByteStr(str_data,4,4).trim();
+                            errorCode = getByteStr(str_data,8,2).trim();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        assert responseCode != null;
+                        assert errorCode != null;
                         if(responseCode.equals("0002")&&errorCode.equals("00")){
-                            Log.e("haha","成功！！！");
+                            String jf_all = null;//总积分
+                            String jf_now = null;//本次积分
+                            String quan_code = null;//优惠码 200075
+                            String quan_type = null;//优惠类型
+                            String quan_shop = null;//优惠商家
+                            String quan_address =null;//优惠地址
+                            String end_time = null;//截止日期
+
+                            try {
+                                jf_all = getByteStr(str_data,28,12).trim();
+                                jf_now = getByteStr(str_data,40,12).trim();
+                                quan_code = getByteStr(str_data, 52,18).trim();
+                                quan_type = getByteStr(str_data,70,30).trim();
+                                quan_shop = getByteStr(str_data,100,20).trim();
+                                quan_address =getByteStr(str_data,120,30).trim();
+                                end_time = getByteStr(str_data,150,8).trim();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
+                            String print_str = "本次积分："+jf_now+"\r\n";
+                            print_str += "总积分："+jf_all+"\r\n";
+                            if(!(quan_code != null && quan_code.equals(""))){
+                                print_str += "优惠码："+quan_code+"\r\n";
+                                print_str += "优惠方式："+quan_type+"\r\n";
+                                if(quan_shop != null && quan_shop.equals("")){
+                                    print_str += "优惠商家：本商场所有商家\r\n";
+                                }else{
+                                    print_str += "优惠商家："+quan_shop+"\r\n";
+                                    print_str += "优惠地址："+quan_address+"\r\n";
+                                }
+                                print_str += "截止时间："+end_time+"\r\n";
+
+                            }
+                            Log.e("dayin",print_str);
+
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.allinpay.usdk",
+                                    "com.allinpay.usdk.MainActivity"));
+                            Bundle bundle = new Bundle();
+                            RequestData data = new RequestData();
+                            data.putValue(BaseData.BUSINESS_ID, Busi_Data.BUSI_MANAGER_SERVICE_PRINT);
+                            data.putValue(BaseData.PRINT_APPEND_TEXT,print_str);
+                            data.putValue(BaseData.PRINT_APPEND_PAGE,1);
+                            data.putValue(BaseData.PRINT_APPEND_PIC,null);
+                            bundle.putSerializable(RequestData.KEY_ERTRAS, data);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent,USDKRuqester.PRINTT_OVER);
+
 
                         }else{
-                            String cnMsg = responseMsg.substring(10,19);
+                            String cnMsg = null;
+                            try {
+                                cnMsg = getByteStr(str_data,10,18).trim();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                             Toast.makeText(MainActivity.this,cnMsg,Toast.LENGTH_LONG).show();
                         }
 
@@ -505,6 +569,12 @@ public class MainActivity extends AppCompatActivity
             }else{
                 Toast.makeText(MainActivity.this,respone.getValue(BaseData.REJCODE_CN),Toast.LENGTH_LONG).show();
             }
+        }else if(requestCode ==USDKRuqester.PRINTT_OVER){
+            card_edt.setText("");
+            phone_edt.setText("");
+            quan_edt.setText("");
+            money_edt.setText("0.00");
+
         }
         socketClient.disconnect();
     }
@@ -558,8 +628,19 @@ public class MainActivity extends AppCompatActivity
         li[6] = (byte)(value ^ 0x82);
         return li;
     }
-    public void refresh() {
-        onCreate(null);
+
+
+    /**
+     *
+      * @param str   源字符串
+     * @param start  开始位置
+     * @param count   字符串位数
+     * @return String
+     * @throws UnsupportedEncodingException ssss
+     */
+    public static String getByteStr(String str, int start, int count) throws UnsupportedEncodingException{
+        byte[] b = str.getBytes("GB2312");
+        return new String(b, start, count,"GB2312");
     }
 
 

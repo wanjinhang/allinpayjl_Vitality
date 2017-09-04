@@ -3,25 +3,29 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="消费撤销" />
+            android:id="@+id/nav_pay"
+            android:icon="@drawable/ic_pay"
+            android:title="@string/sale_bank" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="退货" />
+            android:id="@+id/nav_void"
+            android:icon="@drawable/ic_void"
+            android:title="@string/bank_void" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="余额查询" />
+            android:id="@+id/nav_refund"
+            android:icon="@drawable/ic_refund"
+            android:title="@string/bank_refund" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="打印" />
+            android:id="@+id/nav_balance_bank"
+            android:icon="@drawable/ic_balance_bank"
+            android:title="@string/balance_bank" />
         <item
-            android:id="@+id/nav_manage2"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="结算" />
+            android:id="@+id/nav_print"
+            android:icon="@drawable/ic_print"
+            android:title="@string/print" />
+        <item
+            android:id="@+id/nav_trans_settle"
+            android:icon="@drawable/ic_trans_settle"
+            android:title="@string/trans_settle" />
     </group>
 
     <item android:title="Communicate">
@@ -34,22 +38,7 @@
                 android:id="@+id/nav_printe"
                 android:icon="@drawable/ic_menu_send"
                 android:title="打印" />
-            <item
-                android:id="@+id/nav_share4"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send3"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-            <item
-                android:id="@+id/nav_share2"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send1"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+
         </menu>
     </item>
 

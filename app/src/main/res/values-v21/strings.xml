@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sale_bank">银行卡消费</string>
+    <string name="bank_void">消费撤销</string>
+    <string name="bank_refund">退货</string>
+    <string name="balance_bank">余额查询</string>
+    <string name="print">打印</string>
+    <string name="trans_settle">结算</string>
+</resources>
