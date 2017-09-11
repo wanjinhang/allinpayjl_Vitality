@@ -4,6 +4,7 @@
     <style name="AppTheme.NoActionBar_StatusBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 

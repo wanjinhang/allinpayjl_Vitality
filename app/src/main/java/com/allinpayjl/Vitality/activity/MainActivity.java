@@ -378,7 +378,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_balance_bank) {
 
         } else if(id == R.id.nav_read_card){
-            sendUSDK(Busi_Data.BUSI_MANAGER_SERVICE_READCARD,USDKRuqester.READ_CARD);
+            Intent intent = new Intent();
+            intent.setComponent(new ComponentName("com.allinpay.usdk",
+                    "com.allinpay.usdk.MainActivity"));
+            Bundle bundle = new Bundle();
+            RequestData data = new RequestData();
+            data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_MANAGER_SERVICE_READCARD);
+
+            bundle.putSerializable(RequestData.KEY_ERTRAS, data);
+            intent.putExtras(bundle);
+            startActivityForResult(intent,USDKRuqester.READ_CARD);
         }else if(id == R.id.nav_print){//测试打印优惠码
 
 
@@ -584,21 +593,9 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences userSettings= getSharedPreferences("setting", 0);
         String shopIdStr = userSettings.getString("shopId","");
         String shopNameStr = userSettings.getString("shopName","");
+        Log.e("TEST",shopNameStr+"|"+shopIdStr);
         shopId.setText(shopIdStr);
         shopName.setText(shopNameStr);
-    }
-
-    private  void sendUSDK(String type,int code){
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.allinpay.usdk",
-                "com.allinpay.usdk.MainActivity"));
-        Bundle bundle = new Bundle();
-        RequestData data = new RequestData();
-        data.putValue(RequestData.BUSINESS_ID, type);
-
-        bundle.putSerializable(RequestData.KEY_ERTRAS, data);
-        intent.putExtras(bundle);
-        startActivityForResult(intent,code);
     }
 
     private byte[] Encrypt(byte[] ch)
