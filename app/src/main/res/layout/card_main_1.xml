@@ -54,7 +54,7 @@
                     android:id="@+id/card_main_card_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="银行卡号"
+                    android:hint="@string/card_no"
                     android:maxLength="20"
                     android:maxLines="1"
                     android:inputType="none"
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="请输入手机号"
+                android:hint="@string/phone_no"
                 android:maxLength="20"
                 android:maxLines="1"
                 />
@@ -96,7 +96,7 @@
             android:layout_marginTop="@dimen/text_margin"
             android:checked="false"
             android:switchPadding="@dimen/text_margin"
-            android:text="是否使用优惠券" />
+            android:text="@string/is_quan" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/text_input_layout_edit_text4"
@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="请输入优惠码"
+                android:hint="@string/input_quanCode"
                 android:visibility="gone"
                 android:maxLength="20"
                 android:maxLines="1"
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_button_margin"
-        android:text="会员支付"
+        android:text="@string/vip_pay"
         android:textColor="@color/green_primary_dark"
         />
         <Button
@@ -133,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_button_margin"
-            android:text="普通支付"
+            android:text="@string/cash_pay"
             android:textColor="@color/green_primary_dark"
             />
 

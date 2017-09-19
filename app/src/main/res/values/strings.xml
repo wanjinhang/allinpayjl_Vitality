@@ -16,5 +16,13 @@
     <string name="balance_bank">余额查询</string>
     <string name="print">打印</string>
     <string name="trans_settle">结算</string>
-    <string name="title_activity_void">VoidActivity</string>
+    <string name="ref_no">参考号</string>
+    <string name="trace_no">凭证号</string>
+    <string name="card_no">银行卡号</string>
+    <string name="phone_no">请输入手机号</string>
+    <string name="is_quan">是否使用优惠券</string>
+    <string name="input_quanCode">请输入优惠码</string>
+    <string name="vip_pay">会员支付</string>
+    <string name="cash_pay">现金支付</string>
+    <string name="void">撤销</string>
 </resources>
