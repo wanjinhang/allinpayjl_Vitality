@@ -13,6 +13,7 @@
     card_view:cardCornerRadius="@dimen/card_recycler_corner_radius"
     card_view:cardElevation="20dp"
     >
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,14 +40,23 @@
 
         <Button
             android:id="@+id/bank_void_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_button_margin"
-            android:backgroundTint="#EA4335"
-            android:padding="@dimen/btn_padding"
             android:text="@string/bank_void"
-            android:textColor="@color/white"
+            android:textColor="@color/green_primary_dark"
             />
+        <Button
+            android:id="@+id/scan_void_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/card_button_margin"
+            android:text="@string/scan_void"
+            android:textColor="@color/green_primary_dark"
+            />
+
 
 
     </LinearLayout>

@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity
         socketClient = new SocketClient(url, port);
         socketClient.setCharsetName("GBK");
 
-
-
         setShopId_nav_header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,9 +192,9 @@ public class MainActivity extends AppCompatActivity
         phone_edt = (EditText) findViewById(R.id.card_main_phoneNum);
         quan_Switch.isChecked();
 
-        Button card_main_vipSubmit = (Button) findViewById(R.id.card_main_vipSubmit);
+        Button bank_pay_btn = (Button) findViewById(R.id.bank_pay_btn);
 
-        card_main_vipSubmit.setOnClickListener(new View.OnClickListener() {
+        bank_pay_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String price= money_edt.getText().toString().replace(".", "");//金额
@@ -211,59 +209,16 @@ public class MainActivity extends AppCompatActivity
 
                     String quan_num = quan_edt.getText().toString();//优惠码
                     SharedPreferences userSettings= getSharedPreferences("setting", 0);
-                    String shopIdStr = userSettings.getString("shopId","");
-                    String t_code = userSettings.getString("TER_ID","");
-                    if(quan_Switch.isChecked()){
-                        int len = 17-quan_num.length();
-                        for(int j=0;j<=len;j++){
-                            quan_num +=" ";
-                        }
-                    }else{
-                        quan_num="";
-                        for (int j=0;j<=17;j++){
-                            quan_num+=" ";
-                        }
-                    }
+                    String shop_id = userSettings.getString("shopId","");
+                    String ter_id = userSettings.getString("TER_ID","");
 
-                    int n =18 - phone_num.length();
-                    for(int j=0;j<=n;j++){
-                        phone_num+=" ";
+                    quan_num =String.format("%1$-18s",quan_num);
 
-                    }
-                    String trace_no = "";//流水号
-                    for (int j=0;j<=17;j++){
-                        trace_no+=" ";
-                    }
+                    phone_num =String.format("%1$-19s",phone_num);
+                    String ref_no =String.format("%1$-18s","");//流水号
 
-                    String test_str = quan_num+trace_no+shopIdStr+t_code;
-                    Log.e("haha",test_str);
-                    byte[] bytes= test_str.getBytes();
-                    byte[] test2 = Validate(bytes);
-                    String test_str2 = quan_num+trace_no;
-                    byte[] bytes2= test_str2.getBytes();
-                    byte[] test = Encrypt(bytes2);
-                    final String str_data = "01170001"+amount+quan_num+trace_no+shopIdStr+t_code+card_num+phone_num;
-                    final byte[] b_data = new byte[str_data.length()+7];
-                    for(int j = 0, k = 0, l = 0; j < b_data.length+7; j++)
-                    {
-                        if (j < 20)
-                        {
-                            b_data[j] = (byte)str_data.toCharArray()[j];
-                        }
-                        else if (j < 56)
-                        {
-                            b_data[j] = test[l++];
-                        }
-                        else if (j < 112)
-                        {
-                            b_data[j] = (byte)str_data.toCharArray()[j];
-                        }
-                        else if (j < 119)
-                        {
-                            b_data[j] = test2[k++];
-                        }
-                    }
-
+                    GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
+                    final byte[] b_data =getRequsetStr1.getBytes();
                     socketClient = new SocketClient(url, port);
                     socketClient.setCharsetName("GBK");
                     socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
@@ -430,55 +385,23 @@ public class MainActivity extends AppCompatActivity
                 String card_no = respone.getValue(BaseData.CARDNO);//交易卡号
                 String shop_id = respone.getValue(BaseData.MERCH_ID);//商户号
                 String ter_id = respone.getValue(BaseData.TER_ID);//终端号
+//                String amount = "000000000100";//交易金额
+//                String ref_no = "800028357793";//交易参考号
+//                String card_no = "6214854310994248";//交易卡号
+//                String shop_id = "8212410481600VU";//商户号
+//                String ter_id = "10186547";//终端号
 
                 String tmp1 =card_no.substring(0, 6);
                 String tmp2 =card_no.substring(card_no.length()-4,card_no.length());
                 String card_num = tmp1+"****"+tmp2;
 
-                String quan_num="";
-                for (int j=0;j<=17;j++){
-                    quan_num+=" ";
-                }
-                String phone_num = phone_edt.getText().toString();
-                int n =18 - phone_num.length();
-                for(int j=0;j<=n;j++){
-                    phone_num+=" ";
+                String quan_num =String.format("%1$-18s","");
 
-                }
+                String phone_num =String.format("%1$-19s",phone_edt.getText().toString());
 
-                int len = 17-ref_no.length();
-                for (int j=0;j<=len;j++){
-                    ref_no+=" ";
-                }
-
-                String test_str = quan_num+ref_no+shop_id+ter_id;
-                byte[] bytes= test_str.getBytes();
-                byte[] test2 = Validate(bytes);
-                String test_str2 = quan_num+ref_no;
-                byte[] bytes2= test_str2.getBytes();
-                byte[] test = Encrypt(bytes2);
-                final String str_data = "01170001"+amount+quan_num+ref_no+shop_id+ter_id+card_num+phone_num;
-                Log.e("支付成功",str_data);
-                final byte[] b_data = new byte[str_data.length()+7];
-                for(int j = 0, k = 0, l = 0; j < b_data.length+7; j++)
-                {
-                    if (j < 20)
-                    {
-                        b_data[j] = (byte)str_data.toCharArray()[j];
-                    }
-                    else if (j < 56)
-                    {
-                        b_data[j] = test[l++];
-                    }
-                    else if (j < 112)
-                    {
-                        b_data[j] = (byte)str_data.toCharArray()[j];
-                    }
-                    else if (j < 119)
-                    {
-                        b_data[j] = test2[k++];
-                    }
-                }
+                ref_no=String.format("%1$-18s",ref_no);
+                GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
+                final byte[] b_data =getRequsetStr1.getBytes();
                 socketClient = new SocketClient(url, port);
                 socketClient.setCharsetName("GBK");
                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
@@ -486,13 +409,13 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onConnected(SocketClient client) {
 //                            String str_data = "01170001000000000001123456                              82122014816004200820002621485****424815844460823               ";
+                        Log.e("Star",new String(b_data));
                         socketClient.send(b_data);
                     }
 
                     @Override
                     public void onDisconnected(SocketClient client) {
-
-
+                        Log.e("DISCON","ahahahah");
                     }
 
                     @Override
@@ -500,6 +423,7 @@ public class MainActivity extends AppCompatActivity
                         String str_data = responsePacket.getMessage();
                         String responseCode = null;//返回码
                         String errorCode = null;
+                        Log.e("hhhhh",str_data);
                         try {
                             responseCode = getByteStr(str_data,4,4).trim();
                             errorCode = getByteStr(str_data,8,2).trim();
@@ -559,8 +483,6 @@ public class MainActivity extends AppCompatActivity
                             bundle.putSerializable(RequestData.KEY_ERTRAS, data);
                             intent.putExtras(bundle);
                             startActivityForResult(intent,USDKRuqester.PRINTT_OVER);
-
-
                         }else{
                             String cnMsg = null;
                             try {
@@ -598,35 +520,6 @@ public class MainActivity extends AppCompatActivity
         shopName.setText(shopNameStr);
     }
 
-    private byte[] Encrypt(byte[] ch)
-    {
-        byte key = (byte) ((0x9C ^ 0xA2 ^ 0xC0 ^ 0xF6 ^ 0xA5 ^ 0xEB ^ 0x82)&0xFF);
-        for (int i = 0; i < ch.length; i++)
-        {
-            ch[i] = (byte)((ch[i] ^ key)&0xFF);
-        }
-        return ch;
-    }
-
-    private byte[] Validate(byte[] ch)
-    {
-        int value = 0;
-        for (byte aCh : ch) {
-            value ^= aCh & 0xFF;
-        }
-
-        byte[] li = new byte[7];
-        li[0] = (byte)(value ^ 0x9C);
-        li[1] = (byte)(value ^ 0xA2);
-        li[2] = (byte)(value ^ 0xC0);
-        li[3] = (byte)(value ^ 0xF6);
-        li[4] = (byte)(value ^ 0xA5);
-        li[5] = (byte)(value ^ 0xEB);
-        li[6] = (byte)(value ^ 0x82);
-        return li;
-    }
-
-
     /**
      *
       * @param str   源字符串
@@ -639,8 +532,6 @@ public class MainActivity extends AppCompatActivity
         byte[] b = str.getBytes("GB2312");
         return new String(b, start, count,"GB2312");
     }
-
-
 
 
 

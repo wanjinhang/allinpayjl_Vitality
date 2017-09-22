@@ -66,7 +66,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:backgroundTint="@color/google_blue"
+                android:padding="@dimen/btn_padding"
                 android:id="@+id/card_main_get_cardNum"
+                android:textColor="@color/white"
                 android:text="@string/card_main_getcard"/>
         </LinearLayout>
 
@@ -117,25 +120,44 @@
                 />
 
         </android.support.design.widget.TextInputLayout>
-
-        <Button
-        android:id="@+id/card_main_vipSubmit"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_button_margin"
-        android:text="@string/vip_pay"
-        android:textColor="@color/green_primary_dark"
-        />
-        <Button
-            android:id="@+id/card_main_submit"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_button_margin"
-            android:text="@string/cash_pay"
-            android:textColor="@color/green_primary_dark"
-            />
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bank_pay_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/card_button_margin"
+                android:backgroundTint="@color/google_green"
+                android:padding="@dimen/btn_padding"
+                android:text="@string/bank_pay"
+                android:textColor="@color/white"/>
+            <Button
+                android:id="@+id/scan_pay_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/card_button_margin"
+                android:backgroundTint="@color/google_blue"
+                android:padding="@dimen/btn_padding"
+                android:text="@string/scan_pay"
+                android:textColor="@color/white"/>
+            <Button
+                android:id="@+id/cash_pay_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/card_button_margin"
+                android:backgroundTint="@color/google_yellow"
+                android:padding="@dimen/btn_padding"
+                android:text="@string/cash_pay"
+                android:textColor="@color/white"/>
+
+
+        </LinearLayout>
+
 
 
     </LinearLayout>
