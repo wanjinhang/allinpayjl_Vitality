@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +16,8 @@ import com.allinpay.usdk.core.data.BaseData;
 import com.allinpay.usdk.core.data.Busi_Data;
 import com.allinpay.usdk.core.data.RequestData;
 import com.allinpay.usdk.core.data.ResponseData;
+import com.allinpayjl.Vitality.Utils.GetRequsteStr;
+import com.allinpayjl.Vitality.Utils.USDKRuqester;
 import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
 

@@ -30,6 +30,8 @@ import com.allinpay.usdk.core.data.BaseData;
 import com.allinpay.usdk.core.data.Busi_Data;
 import com.allinpay.usdk.core.data.RequestData;
 import com.allinpay.usdk.core.data.ResponseData;
+import com.allinpayjl.Vitality.Utils.GetRequsteStr;
+import com.allinpayjl.Vitality.Utils.USDKRuqester;
 import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
 
@@ -193,14 +195,14 @@ public class MainActivity extends AppCompatActivity
         quan_Switch.isChecked();
 
         Button bank_pay_btn = (Button) findViewById(R.id.bank_pay_btn);
-
+        //银行卡支付
         bank_pay_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String price= money_edt.getText().toString().replace(".", "");//金额
                 String card_num_tmp = card_edt.getText().toString();//银行卡号
                 String phone_num = phone_edt.getText().toString();//手机号
-                if(!price.equals("")&&!card_num_tmp.equals("")&&!phone_num.equals("")){
+                if(!price.equals("")&&!card_num_tmp.equals("")){
                     int i =Integer.parseInt(price);
                     String amount = String.format("%012d", i);
                     String tmp1 =card_num_tmp.substring(0, 6);
@@ -276,6 +278,90 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        //扫码支付
+        Button scan_pay_btn = (Button) findViewById(R.id.scan_pay_btn);
+        scan_pay_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String price= money_edt.getText().toString().replace(".", "");//金额
+                if(!price.equals("")){
+                    int i =Integer.parseInt(price);
+                    String amount = String.format("%012d", i);
+                    Intent intent = new Intent();
+                    intent.setComponent(new ComponentName("com.allinpay.usdk",
+                            "com.allinpay.usdk.MainActivity"));
+
+                    Bundle bundle = new Bundle();
+                    RequestData data = new RequestData();
+
+                    data.putValue(RequestData.AMOUNT,amount);
+                    data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_SALE_QR);
+
+                    bundle.putSerializable(RequestData.KEY_ERTRAS, data);
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, USDKRuqester.SALE_SCAN);
+
+                }else{
+                    Toast.makeText(MainActivity.this,"请输入填写金额",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        //现金支付
+        Button cash_pay_btn = (Button) findViewById(R.id.cash_pay_btn);
+        cash_pay_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String price= money_edt.getText().toString().replace(".", "");//金额
+                int i =Integer.parseInt(price);
+                String amount = String.format("%012d", i);
+                String ref_no = "000000000000000000";//交易参考号
+                String card_num = "CASH          ";//交易卡号
+                SharedPreferences userSettings= getSharedPreferences("setting", 0);
+                String shop_id = userSettings.getString("shopId","");
+                String ter_id = userSettings.getString("TER_ID","");
+
+
+                String quan_num =String.format("%1$-18s","");
+
+                String phone_num =String.format("%1$-19s","");
+
+                ref_no=String.format("%1$-18s",ref_no);
+                GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
+                final byte[] b_data =getRequsetStr1.getBytes();
+                socketClient = new SocketClient(url, port);
+                socketClient.setCharsetName("GBK");
+                socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
+
+                    @Override
+                    public void onConnected(SocketClient client) {
+
+                        socketClient.send(b_data);
+                    }
+
+                    @Override
+                    public void onDisconnected(SocketClient client) {
+
+                    }
+
+                    @Override
+                    public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
+                        String str_data = responsePacket.getMessage();
+                        String cnMsg = null;
+                        try {
+                            cnMsg = getByteStr(str_data,10,18).trim();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(MainActivity.this,cnMsg,Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+                socketClient.connect();
+            }
+        });
+
         socketClient.disconnect();
 
 
@@ -385,11 +471,6 @@ public class MainActivity extends AppCompatActivity
                 String card_no = respone.getValue(BaseData.CARDNO);//交易卡号
                 String shop_id = respone.getValue(BaseData.MERCH_ID);//商户号
                 String ter_id = respone.getValue(BaseData.TER_ID);//终端号
-//                String amount = "000000000100";//交易金额
-//                String ref_no = "800028357793";//交易参考号
-//                String card_no = "6214854310994248";//交易卡号
-//                String shop_id = "8212410481600VU";//商户号
-//                String ter_id = "10186547";//终端号
 
                 String tmp1 =card_no.substring(0, 6);
                 String tmp2 =card_no.substring(card_no.length()-4,card_no.length());
@@ -506,8 +587,123 @@ public class MainActivity extends AppCompatActivity
             quan_edt.setText("");
             money_edt.setText("0.00");
 
+        }else if(requestCode ==USDKRuqester.SALE_SCAN){
+            if(code.equals("00")){
+                String amount = respone.getValue(BaseData.AMOUNT);//交易金额
+                String ref_no = "000000000000000000";//交易参考号
+                String card_no = respone.getValue(BaseData.CARDNO);//交易卡号
+                String shop_id = respone.getValue(BaseData.MERCH_ID);//商户号
+                String ter_id = respone.getValue(BaseData.TER_ID);//终端号
+
+                String tmp1 =card_no.substring(0, 6);
+                String tmp2 =card_no.substring(card_no.length()-4,card_no.length());
+                String card_num = tmp1+"****"+tmp2;
+
+                String quan_num =String.format("%1$-18s","");
+
+                String phone_num =String.format("%1$-19s",phone_edt.getText().toString());
+
+//                ref_no=String.format("%1$-18s",ref_no);
+                GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
+                final byte[] b_data =getRequsetStr1.getBytes();
+                socketClient = new SocketClient(url, port);
+                socketClient.setCharsetName("GBK");
+                socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
+
+                    @Override
+                    public void onConnected(SocketClient client) {
+                        Log.e("Star",new String(b_data));
+                        socketClient.send(b_data);
+                    }
+
+                    @Override
+                    public void onDisconnected(SocketClient client) {
+                        Log.e("DISCON","ahahahah");
+                    }
+
+                    @Override
+                    public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
+                        String str_data = responsePacket.getMessage();
+                        String responseCode = null;//返回码
+                        String errorCode = null;
+                        Log.e("hhhhh",str_data);
+                        try {
+                            responseCode = getByteStr(str_data,4,4).trim();
+                            errorCode = getByteStr(str_data,8,2).trim();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        assert responseCode != null;
+                        assert errorCode != null;
+                        if(responseCode.equals("0002")&&errorCode.equals("00")){
+                            String jf_all = null;//总积分
+                            String jf_now = null;//本次积分
+                            String quan_code = null;//优惠码 200075
+                            String quan_type = null;//优惠类型
+                            String quan_shop = null;//优惠商家
+                            String quan_address =null;//优惠地址
+                            String end_time = null;//截止日期
+
+                            try {
+                                jf_all = getByteStr(str_data,28,12).trim();
+                                jf_now = getByteStr(str_data,40,12).trim();
+                                quan_code = getByteStr(str_data, 52,18).trim();
+                                quan_type = getByteStr(str_data,70,30).trim();
+                                quan_shop = getByteStr(str_data,100,20).trim();
+                                quan_address =getByteStr(str_data,120,30).trim();
+                                end_time = getByteStr(str_data,150,8).trim();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
+                            String print_str = "本次积分："+jf_now+"\r\n";
+                            print_str += "总积分："+jf_all+"\r\n";
+                            if(!(quan_code != null && quan_code.equals(""))){
+                                print_str += "优惠码："+quan_code+"\r\n";
+                                print_str += "优惠方式："+quan_type+"\r\n";
+                                if(quan_shop != null && quan_shop.equals("")){
+                                    print_str += "优惠商家：本商场所有商家\r\n";
+                                }else{
+                                    print_str += "优惠商家："+quan_shop+"\r\n";
+                                    print_str += "优惠地址："+quan_address+"\r\n";
+                                }
+                                print_str += "截止时间："+end_time+"\r\n";
+
+                            }
+                            Log.e("dayin",print_str);
+
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.allinpay.usdk",
+                                    "com.allinpay.usdk.MainActivity"));
+                            Bundle bundle = new Bundle();
+                            RequestData data = new RequestData();
+                            data.putValue(BaseData.BUSINESS_ID, Busi_Data.BUSI_MANAGER_SERVICE_PRINT);
+                            data.putValue(BaseData.PRINT_APPEND_TEXT,print_str);
+                            data.putValue(BaseData.PRINT_APPEND_PAGE,1);
+                            data.putValue(BaseData.PRINT_APPEND_PIC,null);
+                            bundle.putSerializable(RequestData.KEY_ERTRAS, data);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent,USDKRuqester.PRINTT_OVER);
+                        }else{
+                            String cnMsg = null;
+                            try {
+                                cnMsg = getByteStr(str_data,10,18).trim();
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            Toast.makeText(MainActivity.this,cnMsg,Toast.LENGTH_LONG).show();
+                        }
+
+
+                    }
+                });
+                socketClient.connect();
+
         }
         socketClient.disconnect();
+    }
     }
 
     //初始化 标题商户名

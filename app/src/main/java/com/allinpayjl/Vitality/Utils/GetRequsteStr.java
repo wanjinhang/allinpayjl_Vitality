@@ -1,8 +1,4 @@
-package com.allinpayjl.Vitality.activity;
-
-/**
- * Created by wansui on 2017/9/20.
- */
+package com.allinpayjl.Vitality.Utils;
 
 public class GetRequsteStr {
     private String amount ;//交易金额
@@ -24,9 +20,6 @@ public class GetRequsteStr {
         this.card_num = card_num;
 
         this.quan_num =String.format("%1$-18s",quan_num);
-    }
-    public String getStr(){
-        return "01170001"+this.amount+this.quan_num+this.ref_no+this.shop_id+this.ter_id+this.card_num+this.phone_num;
     }
     public byte[] getBytes(){
         String test_str = this.quan_num+this.ref_no+this.shop_id+this.ter_id;
