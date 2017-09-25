@@ -1,6 +1,8 @@
 package com.allinpayjl.Vitality.activity;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,6 +38,8 @@ import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
 
 import java.io.UnsupportedEncodingException;
+
+import static com.vilyever.contextholder.ContextHolder.getContext;
 
 
 public class MainActivity extends AppCompatActivity
@@ -307,64 +311,76 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        //现金支付
         Button cash_pay_btn = (Button) findViewById(R.id.cash_pay_btn);
         cash_pay_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String price= money_edt.getText().toString().replace(".", "");//金额
-                int i =Integer.parseInt(price);
-                String amount = String.format("%012d", i);
-                String ref_no = "000000000000000000";//交易参考号
-                String card_num = "CASH          ";//交易卡号
-                SharedPreferences userSettings= getSharedPreferences("setting", 0);
-                String shop_id = userSettings.getString("shopId","");
-                String ter_id = userSettings.getString("TER_ID","");
+
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("现金支付")
+                        .setNegativeButton("取消支付", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setPositiveButton("确定支付", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String price= money_edt.getText().toString().replace(".", "");//金额
+                                int i =Integer.parseInt(price);
+                                String amount = String.format("%012d", i);
+                                String ref_no = "000000000000000000";//交易参考号
+                                String card_num = "CASH          ";//交易卡号
+                                SharedPreferences userSettings= getSharedPreferences("setting", 0);
+                                String shop_id = userSettings.getString("shopId","");
+                                String ter_id = userSettings.getString("TER_ID","");
 
 
-                String quan_num =String.format("%1$-18s","");
+                                String quan_num =String.format("%1$-18s","");
 
-                String phone_num =String.format("%1$-19s","");
+                                String phone_num =String.format("%1$-19s","");
 
-                ref_no=String.format("%1$-18s",ref_no);
-                GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
-                final byte[] b_data =getRequsetStr1.getBytes();
-                socketClient = new SocketClient(url, port);
-                socketClient.setCharsetName("GBK");
-                socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
+                                ref_no=String.format("%1$-18s",ref_no);
+                                GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
+                                final byte[] b_data =getRequsetStr1.getBytes();
+                                socketClient = new SocketClient(url, port);
+                                socketClient.setCharsetName("GBK");
+                                socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
-                    @Override
-                    public void onConnected(SocketClient client) {
+                                    @Override
+                                    public void onConnected(SocketClient client) {
 
-                        socketClient.send(b_data);
-                    }
+                                        socketClient.send(b_data);
+                                    }
 
-                    @Override
-                    public void onDisconnected(SocketClient client) {
+                                    @Override
+                                    public void onDisconnected(SocketClient client) {
 
-                    }
+                                    }
 
-                    @Override
-                    public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
-                        String str_data = responsePacket.getMessage();
-                        String cnMsg = null;
-                        try {
-                            cnMsg = getByteStr(str_data,10,18).trim();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(MainActivity.this,cnMsg,Toast.LENGTH_LONG).show();
+                                    @Override
+                                    public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
+                                        String str_data = responsePacket.getMessage();
+                                        String cnMsg = null;
+                                        try {
+                                            cnMsg = getByteStr(str_data,10,18).trim();
+                                        } catch (UnsupportedEncodingException e) {
+                                            e.printStackTrace();
+                                        }
+                                        Toast.makeText(MainActivity.this,cnMsg,Toast.LENGTH_LONG).show();
 
 
-                    }
-                });
-                socketClient.connect();
+                                    }
+                                });
+                                socketClient.connect();
+                            }
+                        })
+                        .create();
+                dialog.show();
             }
         });
 
         socketClient.disconnect();
-
-
 
     }
 
