@@ -34,12 +34,12 @@ import com.allinpay.usdk.core.data.RequestData;
 import com.allinpay.usdk.core.data.ResponseData;
 import com.allinpayjl.Vitality.Utils.GetRequsteStr;
 import com.allinpayjl.Vitality.Utils.USDKRuqester;
+import com.allinpayjl.Vitality.Utils.Utils;
 import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.vilyever.contextholder.ContextHolder.getContext;
 
 
 public class MainActivity extends AppCompatActivity
@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity
     private EditText money_edt = null;
     private EditText quan_edt = null;
     private SocketClient socketClient;
-    private String url = "10.120.2.173";
-    private int port = 4576;
 
 
     @Override
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         initHeaderShopName(showShopName,showShopId);
 
-        socketClient = new SocketClient(url, port);
+        socketClient = new SocketClient(Utils.URL, Utils.PORT);
         socketClient.setCharsetName("GBK");
 
         setShopId_nav_header.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +223,7 @@ public class MainActivity extends AppCompatActivity
 
                     GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                     final byte[] b_data =getRequsetStr1.getBytes();
-                    socketClient = new SocketClient(url, port);
+                    socketClient = new SocketClient(Utils.URL, Utils.PORT);
                     socketClient.setCharsetName("GBK");
                     socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -343,7 +341,7 @@ public class MainActivity extends AppCompatActivity
                                 ref_no=String.format("%1$-18s",ref_no);
                                 GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                                 final byte[] b_data =getRequsetStr1.getBytes();
-                                socketClient = new SocketClient(url, port);
+                                socketClient = new SocketClient(Utils.URL, Utils.PORT);
                                 socketClient.setCharsetName("GBK");
                                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -499,7 +497,7 @@ public class MainActivity extends AppCompatActivity
                 ref_no=String.format("%1$-18s",ref_no);
                 GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                 final byte[] b_data =getRequsetStr1.getBytes();
-                socketClient = new SocketClient(url, port);
+                socketClient = new SocketClient(Utils.URL, Utils.PORT);
                 socketClient.setCharsetName("GBK");
                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -622,7 +620,7 @@ public class MainActivity extends AppCompatActivity
 //                ref_no=String.format("%1$-18s",ref_no);
                 GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                 final byte[] b_data =getRequsetStr1.getBytes();
-                socketClient = new SocketClient(url, port);
+                socketClient = new SocketClient(Utils.URL, Utils.PORT);
                 socketClient.setCharsetName("GBK");
                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 

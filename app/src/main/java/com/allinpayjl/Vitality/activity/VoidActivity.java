@@ -19,6 +19,7 @@ import com.allinpay.usdk.core.data.RequestData;
 import com.allinpay.usdk.core.data.ResponseData;
 import com.allinpayjl.Vitality.Utils.GetRequsteStr;
 import com.allinpayjl.Vitality.Utils.USDKRuqester;
+import com.allinpayjl.Vitality.Utils.Utils;
 import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
 
@@ -37,9 +38,8 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        String url = "10.120.2.173";
-        int port = 4576;
-        socketClient = new SocketClient(url, port);
+
+        socketClient = new SocketClient(Utils.URL, Utils.PORT);
         socketClient.setCharsetName("GBK");
         Button bankVoidBtn = (Button) findViewById(R.id.bank_void_btn);
         Button scanVoidBtn = (Button) findViewById(R.id.scan_void_btn);
