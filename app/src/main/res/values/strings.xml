@@ -29,6 +29,7 @@
     <string name="void_submit">撤销</string>
     <string name="sale_void">消费撤销</string>
     <string name="scan_void">扫码撤销</string>
+    <string name="trans_num">交易单号</string>
 
 
 </resources>

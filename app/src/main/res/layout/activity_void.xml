@@ -5,43 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <include layout="@layout/tool_bar" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/is_bank"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/btn_margin"
-            android:backgroundTint="#9C27B0"
-            android:padding="@dimen/btn_padding"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:text="@string/bank_void"
-            />
-        <Button
-            android:id="@+id/is_scan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/btn_margin"
-            android:backgroundTint="#1976D2"
-            android:padding="@dimen/btn_padding"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:text="@string/scan_void"
-            />
-    </LinearLayout>
-    <include layout="@layout/card_void"
-             android:id="@+id/card_void1"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:visibility="visible"/>
-    <include layout="@layout/card_void"
-             android:id="@+id/card_void2"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:visibility="gone"/>
+
+    <include layout="@layout/card_void_bank"/>
+    <include layout="@layout/card_void_scan"/>
 </LinearLayout>

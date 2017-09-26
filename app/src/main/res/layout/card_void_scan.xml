@@ -13,7 +13,6 @@
     card_view:cardCornerRadius="@dimen/card_recycler_corner_radius"
     card_view:cardElevation="20dp"
     >
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,12 +25,12 @@
             android:layout_marginTop="@dimen/text_margin">
 
             <EditText
-                android:id="@+id/void_trace_no"
+                android:id="@+id/void_trans_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:textColor="@color/black"
-                android:hint="@string/trace_no"
+                android:hint="@string/trans_num"
                 android:maxLength="20"
                 android:maxLines="1"
                 />
@@ -39,24 +38,15 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/bank_void_btn"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_button_margin"
-            android:text="@string/bank_void"
-            android:textColor="@color/green_primary_dark"
-            />
-        <Button
             android:id="@+id/scan_void_btn"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/card_button_margin"
+            android:backgroundTint="@color/google_green"
+            android:padding="@dimen/btn_padding"
             android:text="@string/scan_void"
-            android:textColor="@color/green_primary_dark"
+            android:textColor="@color/white"
             />
-
 
 
     </LinearLayout>

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -40,10 +41,10 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
         int port = 4576;
         socketClient = new SocketClient(url, port);
         socketClient.setCharsetName("GBK");
-//        Button bankVoidBtn = (Button) findViewById(R.id.bank_void_btn);
-//        Button scanVoidBtn = (Button) findViewById(R.id.scan_void_btn);
-//        bankVoidBtn.setOnClickListener(this);
-//        scanVoidBtn.setOnClickListener(this);
+        Button bankVoidBtn = (Button) findViewById(R.id.bank_void_btn);
+        Button scanVoidBtn = (Button) findViewById(R.id.scan_void_btn);
+        bankVoidBtn.setOnClickListener(this);
+        scanVoidBtn.setOnClickListener(this);
 
 
     }
@@ -72,18 +73,21 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
 
         Bundle bundle = new Bundle();
         RequestData data = new RequestData();
-        EditText void_trace_no = (EditText) findViewById(R.id.void_trace_no);
-        String traceNo = void_trace_no.getText().toString();
-        data.putValue(RequestData.ORIG_TRACE_NO,traceNo);
+
         switch (v.getId()) {
 
             case R.id.bank_void_btn:
-
+                EditText void_trace_no = (EditText) findViewById(R.id.void_trace_no);
+                String traceNo = void_trace_no.getText().toString();
+                data.putValue(RequestData.ORIG_TRACE_NO,traceNo);
                 data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_VOID_BANK);
 
                 break;
             case R.id.scan_void_btn:
                 //响应Clicked事件
+                EditText void_trans_num = (EditText) findViewById(R.id.void_trans_num);
+                String transNum = void_trans_num.getText().toString();
+                data.putValue(RequestData.ORIG_TRACE_NO,transNum);
                 data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_VOID_QR);
                 break;
             default:
@@ -128,34 +132,9 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
 
                     @Override
                     public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
-                        String str_data = responsePacket.getMessage();
-                        String responseCode = null;//返回码
-                        String errorCode = null;
-                        try {
-                            responseCode = getByteStr(str_data,4,4).trim();
-                            errorCode = getByteStr(str_data,8,2).trim();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
 
-
-                        assert responseCode != null;
-                        assert errorCode != null;
-                        if(responseCode.equals("0002")&&errorCode.equals("00")){
-
-                            Log.e("dayin",str_data);
-
-
-                        }else{
-                            String cnMsg = null;
-                            try {
-                                cnMsg = getByteStr(str_data,10,18).trim();
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            Toast.makeText(VoidActivity.this,cnMsg,Toast.LENGTH_LONG).show();
-                        }
-
+                        Intent intent = new Intent(VoidActivity.this,MainActivity.class);
+                        startActivity(intent);
 
                     }
                 });
