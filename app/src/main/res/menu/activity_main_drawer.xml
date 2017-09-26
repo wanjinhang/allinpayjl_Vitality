@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_refund"
             android:icon="@drawable/ic_refund"
-            android:title="@string/bank_refund" />
+            android:title="@string/refund" />
         <item
             android:id="@+id/nav_balance_bank"
             android:icon="@drawable/ic_balance_bank"

@@ -38,6 +38,8 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("消费撤销");
 
         socketClient = new SocketClient(Utils.URL, Utils.PORT);
         socketClient.setCharsetName("GBK");
@@ -144,18 +146,6 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
             }
         }
         socketClient.disconnect();
-    }
-    /**
-     *
-     * @param str   源字符串
-     * @param start  开始位置
-     * @param count   字符串位数
-     * @return String
-     * @throws UnsupportedEncodingException ssss
-     */
-    public static String getByteStr(String str, int start, int count) throws UnsupportedEncodingException{
-        byte[] b = str.getBytes("GB2312");
-        return new String(b, start, count,"GB2312");
     }
 
 }

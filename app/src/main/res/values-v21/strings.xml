@@ -1,31 +1,40 @@
 <resources>
     <string name="app_name">活力汇</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">设置</string>
     <string name="title_activity_main">汇收银</string>
-    <string name="main_card_button_1">确认</string>
-    <string name="main_widget_edit_text">输入金额</string>
     <string name="text_nav_header">点击图片获取商户信息</string>
     <string name="card_main_getcard">获取卡号</string>
     <string name="sale_bank">银行卡消费</string>
     <string name="bank_void">银行卡撤销</string>
-    <string name="bank_refund">退货</string>
+    <string name="refund">退货</string>
     <string name="balance_bank">余额查询</string>
     <string name="print">打印</string>
+
+
     <string name="trans_settle">结算</string>
-    <string name="title_activity_void">VoidActivity</string>
+    <string name="main_widget_edit_text">输入金额</string>
+    <string name="ref_no">参考号</string>
     <string name="trace_no">凭证号</string>
-    <string name="银行卡号">card_no</string>
+    <string name="card_no">银行卡号</string>
     <string name="phone_no">请输入手机号</string>
     <string name="is_quan">是否使用优惠券</string>
-    <string name="vip_pay">会员支付</string>
-    <string name="cash_pay">现金支付</string>
+    <string name="input_quanCode">请输入优惠码</string>
+    <string name="bank_pay">银行卡</string>
+    <string name="scan_pay">扫码</string>
+    <string name="cash_pay">现金</string>
+
     <string name="void_submit">撤销</string>
     <string name="sale_void">消费撤销</string>
     <string name="scan_void">扫码撤销</string>
-    <string name="scan_pay">扫码支付</string>
     <string name="trans_num">交易单号</string>
+    <string name="orig_ref_no">原交易参考号</string>
+    <string name="orig_date">原交易日期(四位月日)</string>
+    <string name="orig_trans_num">原交易单号(银行卡无需填写)</string>
+    <string name="bank_refund">银行卡退货</string>
+    <string name="scan_refund">扫码退货</string>
+
+
 </resources>

@@ -6,6 +6,5 @@
     android:orientation="vertical">
     <include layout="@layout/tool_bar" />
 
-    <include layout="@layout/card_void_bank"/>
-    <include layout="@layout/card_void_scan"/>
+    <include layout="@layout/card_refund"/>
 </LinearLayout>

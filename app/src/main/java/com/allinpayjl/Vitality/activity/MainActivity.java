@@ -429,6 +429,8 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, VoidActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_refund) {
+            Intent intent = new Intent(this, RefundActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_balance_bank) {
 

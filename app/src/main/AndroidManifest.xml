@@ -25,7 +25,9 @@
             android:name=".VoidActivity"
             android:theme="@style/AppTheme.NoActionBar_StatusBar">
         </activity>
-        <activity android:name=".RefundActivity">
+        <activity
+            android:name=".RefundActivity"
+            android:theme="@style/AppTheme.NoActionBar_StatusBar">
         </activity>
     </application>
 

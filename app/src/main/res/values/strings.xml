@@ -9,7 +9,7 @@
     <string name="card_main_getcard">获取卡号</string>
     <string name="sale_bank">银行卡消费</string>
     <string name="bank_void">银行卡撤销</string>
-    <string name="bank_refund">退货</string>
+    <string name="refund">退货</string>
     <string name="balance_bank">余额查询</string>
     <string name="print">打印</string>
 
@@ -30,6 +30,12 @@
     <string name="sale_void">消费撤销</string>
     <string name="scan_void">扫码撤销</string>
     <string name="trans_num">交易单号</string>
+    <string name="orig_ref_no">原交易参考号</string>
+    <string name="orig_date">原交易日期(四位月日)</string>
+    <string name="orig_amount">退货金额</string>
+    <string name="orig_trans_num">原交易单号(银行卡无需填写)</string>
+    <string name="bank_refund">银行卡退货</string>
+    <string name="scan_refund">扫码退货</string>
 
 
 </resources>
