@@ -420,34 +420,43 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pay) {
-            //消费
+        if (id == R.id.nav_pay) {//消费支付
+
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_void) {
-            //消费撤销
+        } else if (id == R.id.nav_void) {//消费撤销
+
             Intent intent = new Intent(this, VoidActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_refund) {
+        } else if (id == R.id.nav_refund) {//退货
             Intent intent = new Intent(this, RefundActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_balance_bank) {
+        } else if (id == R.id.nav_balance_bank) {//余额查询
 
-        } else if(id == R.id.nav_read_card){
+            startIntent(Busi_Data.BUSI_BALANCE_BANK);
+        } else if(id == R.id.nav_trans_settle){//终端结算
+
+            startIntent(Busi_Data.BUSI_MANAGER_TRANS_SETTLE);
+        }else if(id == R.id.reprint_settle){//重新打印结算单
+
+            startIntent(Busi_Data.BUSI_MANAGER_TRANS_SETTLE);
+        }else if(id ==R.id.print_total){//打印汇总
+            startIntent(Busi_Data.BUSI_MANAGER_TRANS_PRINT_TOTAL);
+        }else if(id ==R.id.print_detail){//打印明细
+            startIntent(Busi_Data.BUSI_MANAGER_TRANS_PRINT_DETAIL);
+        }else if(id ==R.id.trans_reprint){//打印末笔
             Intent intent = new Intent();
             intent.setComponent(new ComponentName("com.allinpay.usdk",
                     "com.allinpay.usdk.MainActivity"));
             Bundle bundle = new Bundle();
             RequestData data = new RequestData();
-            data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_MANAGER_SERVICE_READCARD);
+            data.putValue(BaseData.ORIG_TRACE_NO,"000000");
+            data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_MANAGER_TRANS_REPRINT);
 
             bundle.putSerializable(RequestData.KEY_ERTRAS, data);
             intent.putExtras(bundle);
-            startActivityForResult(intent,USDKRuqester.READ_CARD);
-        }else if(id == R.id.nav_print){//测试打印优惠码
-
-
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -745,7 +754,18 @@ public class MainActivity extends AppCompatActivity
         return new String(b, start, count,"GB2312");
     }
 
+    public void startIntent(String type){
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.allinpay.usdk",
+                "com.allinpay.usdk.MainActivity"));
+        Bundle bundle = new Bundle();
+        RequestData data = new RequestData();
+        data.putValue(RequestData.BUSINESS_ID, type);
 
+        bundle.putSerializable(RequestData.KEY_ERTRAS, data);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 
 
 }

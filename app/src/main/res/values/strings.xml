@@ -36,6 +36,10 @@
     <string name="orig_trans_num">原交易单号(银行卡无需填写)</string>
     <string name="bank_refund">银行卡退货</string>
     <string name="scan_refund">扫码退货</string>
+    <string name="print_detail">打印交易详细</string>
+    <string name="print_total">打印汇总单</string>
+    <string name="trans_reprint">重打印末笔</string>
+    <string name="reprint_settle">重打印结算单</string>
 
 
 </resources>

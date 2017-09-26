@@ -13,31 +13,36 @@
         <item
             android:id="@+id/nav_refund"
             android:icon="@drawable/ic_refund"
-            android:title="@string/refund" />
+            android:title="@string/bank_refund" />
         <item
             android:id="@+id/nav_balance_bank"
             android:icon="@drawable/ic_balance_bank"
             android:title="@string/balance_bank" />
-        <item
-            android:id="@+id/nav_print"
-            android:icon="@drawable/ic_print"
-            android:title="@string/print" />
+
         <item
             android:id="@+id/nav_trans_settle"
             android:icon="@drawable/ic_trans_settle"
             android:title="@string/trans_settle" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="@string/print">
         <menu>
             <item
-                android:id="@+id/nav_read_card"
+                android:id="@+id/reprint_settle"
                 android:icon="@drawable/ic_menu_share"
-                android:title="读取卡号" />
+                android:title="@string/reprint_settle" />
             <item
-                android:id="@+id/nav_printe"
+                android:id="@+id/trans_reprint"
                 android:icon="@drawable/ic_menu_send"
-                android:title="打印" />
+                android:title="@string/trans_reprint" />
+            <item
+                android:id="@+id/print_total"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/print_total" />
+            <item
+                android:id="@+id/print_detail"
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/print_detail" />
 
         </menu>
     </item>
