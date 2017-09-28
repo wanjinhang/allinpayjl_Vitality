@@ -40,6 +40,7 @@
     <string name="print_total">打印汇总单</string>
     <string name="trans_reprint">重打印末笔</string>
     <string name="reprint_settle">重打印结算单</string>
+    <string name="orig_trace_no">原凭证号</string>
 
 
 </resources>

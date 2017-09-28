@@ -2,6 +2,7 @@ package com.allinpayjl.Vitality.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,8 +23,11 @@ import com.allinpay.usdk.core.data.RequestData;
 import com.allinpay.usdk.core.data.ResponseData;
 import com.allinpayjl.Vitality.Utils.GetRequsteStr;
 import com.allinpayjl.Vitality.Utils.USDKRuqester;
+import com.allinpayjl.Vitality.Utils.Utils;
 import com.vilyever.socketclient.SocketClient;
 import com.vilyever.socketclient.SocketResponsePacket;
+
+import java.io.UnsupportedEncodingException;
 
 
 public class RefundActivity extends AppCompatActivity implements View.OnClickListener{
@@ -38,6 +43,13 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("退货");
+        socketClient = new SocketClient(Utils.URL, Utils.PORT);
+        socketClient.setCharsetName("GBK");
+
+        Button bank_refund_btn = (Button) findViewById(R.id.bank_refund_btn);
+        Button scan_refund_btn = (Button) findViewById(R.id.scan_refund_btn);
+        bank_refund_btn.setOnClickListener(this);
+        scan_refund_btn.setOnClickListener(this);
 
         final EditText orig_amount = (EditText) findViewById(R.id.orig_amount);
         orig_amount.addTextChangedListener(new TextWatcher() {
@@ -122,6 +134,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
      */
     @Override
     public void onClick(View v) {
+        Log.e("haha","jjjjjj");
         Intent intent = new Intent();
         intent.setComponent(new ComponentName("com.allinpay.usdk",
                 "com.allinpay.usdk.MainActivity"));
@@ -131,35 +144,29 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
         EditText orig_ref_no = (EditText) findViewById(R.id.orig_ref_no);
         String ref_no = orig_ref_no.getText().toString();
         EditText orig_amount = (EditText) findViewById(R.id.orig_amount);
-        String amount = orig_amount.getText().toString();
-        int i =Integer.parseInt(amount);
+        String price= orig_amount.getText().toString().replace(".", "");
+        int i =Integer.parseInt(price);
         String a = String.format("%012d", i);
         EditText orig_date = (EditText) findViewById(R.id.orig_date);
         String date = orig_date.getText().toString();
-        data.putValue(RequestData.ORIG_TRACE_NO,ref_no);
+        data.putValue(RequestData.ORIG_REF_NO,ref_no);
         data.putValue(RequestData.AMOUNT,a);
         data.putValue(RequestData.ORIG_DATE,date);
         switch (v.getId()) {
 
             case R.id.bank_refund_btn:
-
-                data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_VOID_BANK);
+                getRefund(0);
 
                 break;
             case R.id.scan_refund_btn:
                 //响应Clicked事件
-                EditText orig_trans_num = (EditText) findViewById(R.id.orig_trans_num);
-                String trans_num = orig_trans_num.getText().toString();
-                data.putValue(RequestData.ORIG_TRACE_NO,trans_num);
-                data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_VOID_QR);
+                getRefund(1);
                 break;
             default:
                 break;
 
         }
-        bundle.putSerializable(RequestData.KEY_ERTRAS, data);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, USDKRuqester.SALE_VOID);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -195,9 +202,16 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
-
-                        Intent intent = new Intent(RefundActivity.this,MainActivity.class);
-                        startActivity(intent);
+                        String str_data = responsePacket.getMessage();
+                        String cnMsg = null;
+                        try {
+                            cnMsg = getByteStr(str_data,10,18).trim();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(RefundActivity.this,cnMsg,Toast.LENGTH_LONG).show();
+//                        Intent intent = new Intent(RefundActivity.this,MainActivity.class);
+//                        startActivity(intent);
 
                     }
                 });
@@ -207,5 +221,103 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
         socketClient.disconnect();
+    }
+    public static String getByteStr(String str, int start, int count) throws UnsupportedEncodingException{
+        byte[] b = str.getBytes("GB2312");
+        return new String(b, start, count,"GB2312");
+    }
+    public void getRefund(final int type){
+
+        EditText orig_ref_no = (EditText) findViewById(R.id.orig_ref_no);
+        String ref_no= orig_ref_no.getText().toString();//参考号
+
+        if(!ref_no.equals("")){
+
+            String amount = "000000000000";
+            String card_num = String.format("%1$-14s","");
+
+            String quan_num = String.format("%1$-18s","");//优惠码
+            SharedPreferences userSettings= getSharedPreferences("setting", 0);
+            String shop_id = userSettings.getString("shopId","");
+            String ter_id = userSettings.getString("TER_ID","");
+            String phone_num =String.format("%1$-19s","");
+            ref_no =String.format("%1$-18s",ref_no);//流水号
+
+            GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
+            final byte[] b_data =getRequsetStr1.getBytes();
+            socketClient = new SocketClient(Utils.URL, Utils.PORT);
+            socketClient.setCharsetName("GBK");
+            socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
+
+                @Override
+                public void onConnected(SocketClient client) {
+//                            String str_data = "01170001000000000001123456                              82122014816004200820002621485****424815844460823               ";
+                    socketClient.send(b_data);
+                }
+
+                @Override
+                public void onDisconnected(SocketClient client) {
+
+                }
+
+                @Override
+                public void onResponse(SocketClient client, @NonNull SocketResponsePacket responsePacket) {
+                    String responseMsg = responsePacket.getMessage();
+
+                    assert responseMsg != null;
+                    String responseCode = responseMsg.substring(4,8);//返回码
+                    String errorCode = responseMsg.substring(8,10);
+                    Log.e("TEXT",responseMsg);
+                    Log.e("Code",responseCode+"|"+errorCode);
+                    if(responseCode.equals("0002")&&errorCode.equals("00")){
+                        Intent intent = new Intent();
+                        intent.setComponent(new ComponentName("com.allinpay.usdk",
+                                "com.allinpay.usdk.MainActivity"));
+
+                        Bundle bundle = new Bundle();
+                        RequestData data = new RequestData();
+                        EditText orig_ref_no = (EditText) findViewById(R.id.orig_ref_no);
+                        String ref_no = orig_ref_no.getText().toString();
+                        EditText orig_amount = (EditText) findViewById(R.id.orig_amount);
+                        String price= orig_amount.getText().toString().replace(".", "");
+                        int i =Integer.parseInt(price);
+                        String a = String.format("%012d", i);
+
+                        data.putValue(RequestData.ORIG_REF_NO,ref_no);
+                        data.putValue(RequestData.AMOUNT,a);
+                        EditText orig_date = (EditText) findViewById(R.id.orig_date);
+                        String date = orig_date.getText().toString();
+                        data.putValue(RequestData.ORIG_DATE,date);
+                        if(type ==0){
+
+                            data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_REFUND_BANK);
+                        }else if(type ==1){
+
+                            EditText void_trans_num = (EditText) findViewById(R.id.orig_trans_num);
+                            String transNum = void_trans_num.getText().toString();
+                            data.putValue(RequestData.ORIG_TRACE_NO,transNum);
+                            data.putValue(RequestData.BUSINESS_ID, Busi_Data.BUSI_REFUND_QR);
+                        }
+
+
+
+                        bundle.putSerializable(RequestData.KEY_ERTRAS, data);
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, USDKRuqester.SALE_VOID);
+
+
+
+                    }else{
+                        String cnMsg = responseMsg.substring(10,19);
+                        Toast.makeText(RefundActivity.this,cnMsg,Toast.LENGTH_LONG).show();
+                    }
+
+
+                }
+            });
+            socketClient.connect();
+        }else{
+            Toast.makeText(RefundActivity.this,"请输入填写完整",Toast.LENGTH_LONG).show();
+        }
     }
 }

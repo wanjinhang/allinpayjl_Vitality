@@ -42,35 +42,18 @@
             android:layout_marginTop="@dimen/text_margin">
 
             <EditText
-                android:id="@+id/orig_date"
+                android:id="@+id/orig_trace_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
+                android:inputType="number"
                 android:textColor="@color/black"
-                android:hint="@string/orig_date"
+                android:hint="@string/orig_trace_no"
                 android:maxLength="20"
                 android:maxLines="1"
                 />
 
         </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin">
 
-            <EditText
-                android:id="@+id/orig_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:textColor="@color/black"
-                android:hint="@string/orig_amount"
-                android:text="0.00"
-                android:maxLength="20"
-                android:maxLines="1"
-                />
-
-        </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,33 +71,33 @@
                 />
 
         </android.support.design.widget.TextInputLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/bank_refund_btn"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/card_button_margin"
-            android:backgroundTint="@color/google_red"
-            android:padding="@dimen/btn_padding"
-            android:text="@string/bank_refund"
-            android:textColor="@color/white"
-            />
-        <Button
-            android:id="@+id/scan_refund_btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/card_button_margin"
-            android:backgroundTint="@color/google_green"
-            android:padding="@dimen/btn_padding"
-            android:text="@string/scan_refund"
-            android:textColor="@color/white"
-            />
-    </LinearLayout>
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bank_void_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/card_button_margin"
+                android:backgroundTint="@color/google_red"
+                android:padding="@dimen/btn_padding"
+                android:text="@string/bank_void"
+                android:textColor="@color/white"
+                />
+            <Button
+                android:id="@+id/scan_void_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/card_button_margin"
+                android:backgroundTint="@color/google_green"
+                android:padding="@dimen/btn_padding"
+                android:text="@string/scan_void"
+                android:textColor="@color/white"
+                />
+        </LinearLayout>
 
 
 

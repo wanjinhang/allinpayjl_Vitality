@@ -29,19 +29,19 @@
         <menu>
             <item
                 android:id="@+id/reprint_settle"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_reprint_settle"
                 android:title="@string/reprint_settle" />
             <item
                 android:id="@+id/trans_reprint"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_trans_reprint"
                 android:title="@string/trans_reprint" />
             <item
                 android:id="@+id/print_total"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_print_total"
                 android:title="@string/print_total" />
             <item
                 android:id="@+id/print_detail"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_print_detail"
                 android:title="@string/print_detail" />
 
         </menu>

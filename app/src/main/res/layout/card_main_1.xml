@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:hint="@string/main_widget_edit_text"
+                android:text="0.00"
                 android:maxLength="20"
                 android:maxLines="1"
                 />
