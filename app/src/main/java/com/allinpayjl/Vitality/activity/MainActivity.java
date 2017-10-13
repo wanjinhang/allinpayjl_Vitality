@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -49,11 +50,36 @@ public class MainActivity extends AppCompatActivity
     private EditText money_edt = null;
     private EditText quan_edt = null;
     private SocketClient socketClient;
+    private long exitTime = 0;
+    private float nowVersionCode,saveVersionCode;
+    private static final String ISFIRSTLAUCH = "isFirstLauch";
+    private static final String SAVEVERSIONCODE = "saveVersionCode";
+    private static final String SAVESTATUS = "saveStatus";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        nowVersionCode = getVersionCode();
+        SharedPreferences sp  = getSharedPreferences(ISFIRSTLAUCH,MODE_PRIVATE);
+        saveVersionCode = sp.getFloat(SAVEVERSIONCODE,0);
+
+
+        if (nowVersionCode > saveVersionCode) {
+            //第一次安装启动
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putFloat(SAVEVERSIONCODE, nowVersionCode);
+            editor.putBoolean(SAVESTATUS, true);
+            editor.commit();
+            SharedPreferences userSettings = getSharedPreferences("setting", 0);
+            SharedPreferences.Editor editor1 = userSettings.edit();
+            editor1.putString("serverAddress","10.120.2.173");
+            editor1.apply();
+            //初始化数据
+
+        }
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
         initHeaderShopName(showShopName,showShopId);
 
-        socketClient = new SocketClient(Utils.URL, Utils.PORT);
+        socketClient = new SocketClient(Utils.getURL(this), Utils.PORT);
         socketClient.setCharsetName("GBK");
 
         setShopId_nav_header.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +249,7 @@ public class MainActivity extends AppCompatActivity
 
                     GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                     final byte[] b_data =getRequsetStr1.getBytes();
-                    socketClient = new SocketClient(Utils.URL, Utils.PORT);
+                    socketClient = new SocketClient(Utils.getURL(MainActivity.this), Utils.PORT);
                     socketClient.setCharsetName("GBK");
                     socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -341,7 +367,7 @@ public class MainActivity extends AppCompatActivity
                                 ref_no=String.format("%1$-18s",ref_no);
                                 GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                                 final byte[] b_data =getRequsetStr1.getBytes();
-                                socketClient = new SocketClient(Utils.URL, Utils.PORT);
+                                socketClient = new SocketClient(Utils.getURL(MainActivity.this), Utils.PORT);
                                 socketClient.setCharsetName("GBK");
                                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -387,8 +413,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        if(System.currentTimeMillis() - exitTime > 2000) {
+            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
         } else {
-            super.onBackPressed();
+            finish();
+            System.exit(0);
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 
@@ -408,7 +440,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this,SettingActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -508,7 +541,7 @@ public class MainActivity extends AppCompatActivity
                 ref_no=String.format("%1$-18s",ref_no);
                 GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                 final byte[] b_data =getRequsetStr1.getBytes();
-                socketClient = new SocketClient(Utils.URL, Utils.PORT);
+                socketClient = new SocketClient(Utils.getURL(MainActivity.this), Utils.PORT);
                 socketClient.setCharsetName("GBK");
                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -631,7 +664,7 @@ public class MainActivity extends AppCompatActivity
 //                ref_no=String.format("%1$-18s",ref_no);
                 GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
                 final byte[] b_data =getRequsetStr1.getBytes();
-                socketClient = new SocketClient(Utils.URL, Utils.PORT);
+                socketClient = new SocketClient(Utils.getURL(MainActivity.this), Utils.PORT);
                 socketClient.setCharsetName("GBK");
                 socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
@@ -765,6 +798,15 @@ public class MainActivity extends AppCompatActivity
         bundle.putSerializable(RequestData.KEY_ERTRAS, data);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+    private float getVersionCode(){
+        float versionCode = 0;
+        try {
+            versionCode = getPackageManager().getPackageInfo(getPackageName(),0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionCode;
     }
 
 

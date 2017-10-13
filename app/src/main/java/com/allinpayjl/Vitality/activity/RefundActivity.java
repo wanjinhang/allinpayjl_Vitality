@@ -43,7 +43,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("退货");
-        socketClient = new SocketClient(Utils.URL, Utils.PORT);
+        socketClient = new SocketClient(Utils.getURL(RefundActivity.this), Utils.PORT);
         socketClient.setCharsetName("GBK");
 
         Button bank_refund_btn = (Button) findViewById(R.id.bank_refund_btn);
@@ -245,7 +245,7 @@ public class RefundActivity extends AppCompatActivity implements View.OnClickLis
 
             GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
             final byte[] b_data =getRequsetStr1.getBytes();
-            socketClient = new SocketClient(Utils.URL, Utils.PORT);
+            socketClient = new SocketClient(Utils.getURL(RefundActivity.this), Utils.PORT);
             socketClient.setCharsetName("GBK");
             socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 

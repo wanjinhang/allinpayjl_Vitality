@@ -29,6 +29,10 @@
             android:name=".RefundActivity"
             android:theme="@style/AppTheme.NoActionBar_StatusBar">
         </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:theme="@style/AppTheme.NoActionBar_StatusBar">
+        </activity>
     </application>
 
 </manifest>

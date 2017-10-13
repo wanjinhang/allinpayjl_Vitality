@@ -41,7 +41,7 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("消费撤销");
 
-        socketClient = new SocketClient(Utils.URL, Utils.PORT);
+        socketClient = new SocketClient(Utils.getURL(VoidActivity.this), Utils.PORT);
         socketClient.setCharsetName("GBK");
         Button bankVoidBtn = (Button) findViewById(R.id.bank_void_btn);
         Button scanVoidBtn = (Button) findViewById(R.id.scan_void_btn);
@@ -163,7 +163,7 @@ public class VoidActivity extends AppCompatActivity  implements View.OnClickList
 
             GetRequsteStr getRequsetStr1 = new GetRequsteStr(amount,ref_no,shop_id,ter_id,phone_num,card_num,quan_num);
             final byte[] b_data =getRequsetStr1.getBytes();
-            socketClient = new SocketClient(Utils.URL, Utils.PORT);
+            socketClient = new SocketClient(Utils.getURL(VoidActivity.this), Utils.PORT);
             socketClient.setCharsetName("GBK");
             socketClient.registerSocketDelegate(new SocketClient.SocketDelegate(){
 
