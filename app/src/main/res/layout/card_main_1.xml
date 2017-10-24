@@ -58,7 +58,6 @@
                     android:hint="@string/card_no"
                     android:maxLength="20"
                     android:maxLines="1"
-                    android:inputType="none"
                     />
 
             </android.support.design.widget.TextInputLayout>

@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         card_edt = (EditText) findViewById(R.id.card_main_card_num);
-        card_edt.setKeyListener(null);
+//        card_edt.setKeyListener(null);
         quan_edt = (EditText) findViewById(R.id.card_main_quan);
         //是否使用优惠券
         final Switch quan_Switch = (Switch) findViewById(R.id.switch1);

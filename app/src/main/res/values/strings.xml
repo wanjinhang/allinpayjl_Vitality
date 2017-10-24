@@ -40,7 +40,7 @@
     <string name="print_total">打印汇总单</string>
     <string name="trans_reprint">重打印末笔</string>
     <string name="reprint_settle">重打印结算单</string>
-    <string name="orig_trace_no">原凭证号</string>
+    <string name="orig_trace_no">原凭证号(扫码无需填写)</string>
     <string name="shop_name">商户名称</string>
     <string name="shop_id">商户编码</string>
     <string name="server_address">服务器地址</string>
